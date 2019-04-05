@@ -1,0 +1,26 @@
+"VertexlitGeneric"
+{
+	"$baseTexture" "models/paintcan/paint_can"
+	"$bumpmap" "models/paintcan/paint_can_phongmask" 
+
+	"$blendtintbybasealpha" 1 
+ 	"$blendtintcoloroverbase" 0
+
+	"$color2" "{255 255 255}"
+	"$colortint_base" "{255 255 255}"
+	"$colortint_tmp" "[0 0 0]" 
+
+	"$phong" "1"
+	"$phongexponent" "65"
+	"$phongboost" "4.5"
+//	"$lightwarptexture" "models/lightwarps/weapon_lightwarp"	
+	"$phongfresnelranges"	"[.25 .5 1]"
+
+
+	// Rim lighting parameters
+	"$rimlight" "1"												// To enable rim lighting (requires phong)
+	"$rimlightexponent" "4"										// Exponent for phong component of rim lighting	
+	"$rimlightboost" ".1"										// Boost for ambient cube component of rim lighting
+
+
+}
