@@ -1,3 +1,11 @@
+-- Prepare some prepared queries to make database stuff faster and more secure
+hook.Add('InitPostEntity', 'PreparedInventoryQueries', function()
+	local db = GAMEMODE:CheckDBConnection()
+	GAMEMODE.MinigamesPQueries['getinventory'] = db:prepare("SELECT inventory, equipped FROM minigames_inventory WHERE `steamid64` = ?;")
+	GAMEMODE.MinigamesPQueries['addnewinventory'] = db:prepare("INSERT INTO minigames_inventory VALUES(?, NULL, NULL);")
+	GAMEMODE.MinigamesPQueries['updateinventory'] = db:prepare("UPDATE minigames_inventory SET `inventory` = ?, `equipped` = ? WHERE `steamid64` = ?;")
+end )
+
 -- Global shop tables to keep track of player inventories
 SHOP.PlayerInventories = SHOP.PlayerInventories or {}
 SHOP.PlayerEquipped = SHOP.PlayerEquipped or {}
@@ -22,12 +30,63 @@ function SHOP:DefaultInventory()
     return test_inventory
 end
 
+-- Save a player's inventory to the database
+function SHOP:SaveInventory(ply)
+    if not SHOP.PlayerInventories[ply] then return end
+    
+    local json = util.TableToJSON(SHOP.PlayerInventories[ply], false)
+    local json_equipped = util.TableToJSON(SHOP.PlayerEquipped[ply] or {}, false)
+    
+    local q = GAMEMODE.MinigamesPQueries['updateinventory']
+	if not q then return end
+    q:setString(1, json)
+    q:setString(2, json_equipped)
+    q:setString(3, ply:SteamID64())
+    
+    -- Success function
+    function q:onSuccess(data)
+        print('success')
+    end
+    
+    -- Print error if any occur (they shouldn't)
+    function q:onError(err)
+        print(err)
+    end
+    q:start()
+end
+
 -- Load a player's inventory
 function SHOP:LoadInventory(ply, callback)
-    SHOP.PlayerInventories[ply] = SHOP:DefaultInventory()
+    local q = GAMEMODE.MinigamesPQueries['getinventory']
+	if not q then return end
+    q:setString(1, ply:SteamID64())
     
-    local inventory = SHOP.PlayerInventories[ply]
-    callback(inventory)
+    -- Success function
+    function q:onSuccess(data)
+        if type(data) == 'table' and #data > 0 then
+            -- Load information from DB
+            SHOP.PlayerInventories[ply] = util.JSONToTable(data[1]['inventory'] or '') or {}
+            SHOP.PlayerEquipped[ply] = util.JSONToTable(data[1]['equipped'] or '') or {}
+            
+        else
+            -- Add new blank row into the table
+            local q = GAMEMODE.MinigamesPQueries['addnewinventory']
+            q:setString(1, ply:SteamID64())
+            q:start()
+            
+            SHOP.PlayerInventories[ply] = SHOP:DefaultInventory()
+        end
+        
+        if callback then
+            callback(inventory)
+        end
+    end
+    
+    -- Print error if any occur (they shouldn't)
+    function q:onError(err)
+        print(err)
+    end
+    q:start()
 end
 
 -- Transmit the equipped table to the clients
@@ -49,7 +108,7 @@ function SHOP:NetworkInventory(ply)
 end
 
 -- Add an item to the inventory
-function SHOP:AddItem(ITEM, ply)
+function SHOP:AddItem(ITEM, ply, nosave)
     if type(ITEM) != 'table' then
         ITEM = {VanillaID = ITEM}
     end
@@ -63,12 +122,17 @@ function SHOP:AddItem(ITEM, ply)
         net.WriteString('ADD')
         net.WriteTable(ITEM)
     net.Send(ply)
+    
+    -- Save the inventory changes
+    if not nosave then
+        SHOP:SaveInventory(ply)
+    end
 	
 	return key
 end
 
 -- Remove an item from the inventory
-function SHOP:RemoveItem(key, ply)
+function SHOP:RemoveItem(key, ply, nosave)
     if not SHOP.PlayerInventories[ply] then return end
 	if not SHOP.PlayerInventories[ply][key] then return end
 	table.remove(SHOP.PlayerInventories[ply], key)
@@ -79,6 +143,11 @@ function SHOP:RemoveItem(key, ply)
 		net.WriteInt(key, 16)
 	net.Send(ply)
 	SHOP:NetworkEquipped(ply)
+    
+    -- Save the inventory changes
+    if not nosave then
+        SHOP:SaveInventory(ply)
+    end
 end
 
 function SHOP:EquipItem(key, ply, state)
