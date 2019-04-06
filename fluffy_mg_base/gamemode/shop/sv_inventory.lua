@@ -68,6 +68,12 @@ function SHOP:LoadInventory(ply, callback)
             SHOP.PlayerInventories[ply] = util.JSONToTable(data[1]['inventory'] or '') or {}
             SHOP.PlayerEquipped[ply] = util.JSONToTable(data[1]['equipped'] or '') or {}
             
+            if #SHOP.PlayerEquipped[ply] > 0 then
+                for k, v in pairs(SHOP.PlayerEquipped[ply]) do
+                    if not v then continue end
+                    SHOP:EquipItem(k, ply, true)
+                end
+            end
         else
             -- Add new blank row into the table
             local q = GAMEMODE.MinigamesPQueries['addnewinventory']
