@@ -20,7 +20,8 @@ function SHOP:PrepareUnbox(cratekey, ply)
 	if not SHOP.PlayerInventories[ply][cratekey] then return end
 	
 	local unbox = SHOP:ParseVanillaItem(SHOP.PlayerInventories[ply][cratekey])
-	if !unbox.Items then return end
+    if not unbox then return end
+	if not unbox.Items then return end
 	
 	return unbox.Items, unbox.Chances
 end

@@ -14,12 +14,12 @@ SHOP.PlayerEquippedSlots = SHOP.PlayerEquippedSlots or {}
 -- Default inventory for testing purposes
 local test_inventory = {
     {VanillaID = 'unbox_test'},
+    {VanillaID = 'paintkit_test'},
     {VanillaID = 'testtrail', Name='Hilarious', Rarity=2, Type='Trail', Paintable=true, Material='trails/lol.vmt'},
 	{VanillaID = 'testtrail', Name='Hilarious', Rarity=2, Type='Trail', Paintable=true, Material='trails/lol.vmt'},
-    {VanillaID = 'bewaredog'},
-    {VanillaID = 'gmanonhead'},
-    {VanillaID = 'camera'},
 	{VanillaID = 'tracer_disco'},
+    {VanillaID = 'balloon_classic'},
+    {VanillaID = 'clockmask'},
 	SHOP.PaintList['blueberry'],
 	{VanillaID = 'tracer_lol', Locked = true}
 }

@@ -7,6 +7,9 @@ include('sv_equip.lua')
 include('sv_inventory.lua')
 include('sv_unboxing.lua')
 
+resource.AddFile("models/paintcan/paint_can.mdl")
+resource.AddFile("materials/models/paintcan/paint_can.vmt")
+
 util.AddNetworkString('SHOP_RequestItemAction')
 util.AddNetworkString('SHOP_NetworkInventory')
 util.AddNetworkString('SHOP_BroadcastEquip')

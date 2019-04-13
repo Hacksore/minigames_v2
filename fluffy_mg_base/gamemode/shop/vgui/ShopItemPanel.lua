@@ -36,6 +36,11 @@ function PANEL:Ready()
     ITEM = SHOP:ParseVanillaItem(ITEM)
     self.ITEM = ITEM
     
+    if not ITEM then
+        -- ???
+        return
+    end
+    
     -- Decide what function to use
     if ITEM.Type == 'Crate' then
         self:CrateIcon(ITEM)
