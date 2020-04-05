@@ -1,5 +1,4 @@
 -- cancelled because for some reason npc_snipers dont return anything when they die
-
 -- MOD.Name = 'Take Cover!'
 -- MOD.ScoreValue = 0.5
 -- MOD.ScoringPane = true
