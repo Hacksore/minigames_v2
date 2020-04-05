@@ -17,6 +17,8 @@ local function spawnBees()
         bee:Spawn()
         bee:SetMaxHealth(1)
         bee:SetHealth(1)
+        bee:SetColor(255, 0, 0, 255)
+        bee:SetMaterial("models/props_combine/portalball001_sheet")
     end
 end
 
@@ -29,9 +31,16 @@ local function spawnQueen()
         local queen = ents.Create("npc_manhack")
         queen:SetPos(pos)
         queen:Spawn()
-        queen:SetMaxHealth(200)
-        queen:SetHealth(200)
-        queen:SetModelScale(5)
+        queen:SetMaxHealth(150)
+        queen:SetHealth(150)
+        queen:SetModelScale(3)
+        queen:SetColor(255, 0, 0, 255)
+        queen:SetMaterial("models/props_combine/portalball001_sheet")
+        --models/props_combine/portalball001_sheet
+        --models/shiny
+        --models/player/shared/gold_player
+        --models/debug/debugwhite
+        --queen:SetRenderMode() was meant to fix colour but didnt work, use material instead. if you get the rendermode thing too work remember to apply it too normal manhacks too (bee) oh and dont forget to apply the material too both
     end
 end
 
@@ -50,8 +59,13 @@ function MOD:Initialize()
 end
 
 function MOD:Loadout(ply)
-    ply:Give('weapon_smg1')
-    ply:GiveAmmo(9999, 4, true)
+    ply:SetMaxHealth(50)
+    ply:SetHealth(50)
+    ply:Give('weapon_shotgun')
+    ply:GiveAmmo(9999, 7, true)
+    --ply:GiveAmmo(9999, 2, true) ar2 altfire balls
+    --ply:GiveAmmo(9999, 4, true) smg1 ammo
+
 end
 
 function MOD:EntityTakeDamage(ent, dmg)
