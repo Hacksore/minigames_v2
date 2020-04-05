@@ -20,6 +20,22 @@ local function spawnBees()
     end
 end
 
+local function spawnQueen()
+    local number = GAMEMODE:PlayerScale(2, 3, 16)
+    local positions = GAMEMODE:GetRandomLocations(number, 'sky')
+
+    for i=1,number do
+        local pos = positions[i]
+        local queen = ents.Create("npc_manhack")
+        queen:SetPos(pos)
+        queen:Spawn()
+        queen:SetMaxHealth(200)
+        queen:SetHealth(200)
+        queen:SetModelScale(5)
+    end
+end
+
+
 function MOD:OnNPCKilled(npc, attacker, inflictor)
     if not attacker:IsPlayer() then return end
     if npc:GetClass() != "npc_manhack" then return end
@@ -29,12 +45,13 @@ end
 
 function MOD:Initialize()
     spawnBees()
+    spawnQueen()
     GAMEMODE:Announce("Who angered the bees!?")
 end
 
 function MOD:Loadout(ply)
     ply:Give('weapon_smg1')
-    ply:GiveAmmo(666, 'weapon_smg1 ammo', false)
+    ply:GiveAmmo(9999, 4, true)
 end
 
 function MOD:EntityTakeDamage(ent, dmg)
@@ -43,5 +60,5 @@ end
 
 MOD.ThinkTime = 1
 function MOD:Think()
-    spawnManhack()
+    spawnBees()
 end
