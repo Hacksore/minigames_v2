@@ -1,10 +1,11 @@
 MOD.Name = 'Hive'
 MOD.Region = 'knockback'
-MOD.SurviveValue = 1
-MOD.ScoreValue = 0.2
-MOD.ScoringPane = true
-MOD.WinValue = 3
-MOD.RoundTime = 30
+--MOD.SurviveValue = 1
+--MOD.ScoreValue = 0.2
+--MOD.ScoringPane = true
+--MOD.WinValue = 3
+MOD.SurviveValue = 3
+MOD.RoundTime = 20
 
 local function spawnBees()
     local number = GAMEMODE:PlayerScale(0.4, 3, 6)
@@ -17,8 +18,8 @@ local function spawnBees()
         bee:Spawn()
         bee:SetMaxHealth(1)
         bee:SetHealth(1)
-        bee:SetColor(255, 0, 0, 255)
-        bee:SetMaterial("models/props_combine/portalball001_sheet")
+        bee:SetColor(0, 0, 0, 200)
+        bee:SetMaterial("models/player/shared/gold_player")
     end
 end
 
@@ -34,8 +35,8 @@ local function spawnQueen()
         queen:SetMaxHealth(150)
         queen:SetHealth(150)
         queen:SetModelScale(3)
-        queen:SetColor(255, 0, 0, 255)
-        queen:SetMaterial("models/props_combine/portalball001_sheet")
+        queen:SetColor(0, 0, 0, 200)
+        queen:SetMaterial("models/player/shared/gold_player")
         --models/props_combine/portalball001_sheet
         --models/shiny
         --models/player/shared/gold_player
@@ -59,10 +60,10 @@ function MOD:Initialize()
 end
 
 function MOD:Loadout(ply)
-    ply:SetMaxHealth(50)
-    ply:SetHealth(50)
-    ply:Give('weapon_shotgun')
-    ply:GiveAmmo(9999, 7, true)
+    ply:SetMaxHealth(5)
+    ply:SetHealth(5)
+    --ply:Give('weapon_shotgun')
+    --ply:GiveAmmo(9999, 7, true)
     --ply:GiveAmmo(9999, 2, true) ar2 altfire balls
     --ply:GiveAmmo(9999, 4, true) smg1 ammo
 
