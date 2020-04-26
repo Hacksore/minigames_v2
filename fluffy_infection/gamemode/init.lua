@@ -10,9 +10,9 @@ function GM:PlayerLoadout( ply )
     
     if ply:Team() == TEAM_BLUE then
         -- Survivors
-        ply:Give('weapon_mg_pistol')
-        ply:Give('weapon_mg_smg')
-        ply:Give('weapon_mg_shotgun')
+        ply:Give('weapon_inf_revolver')
+        -- ply:Give('weapon_mg_smg')
+        ply:Give('weapon_inf_shotgun')
         ply:GiveAmmo(512, 'Pistol', true)
         ply:GiveAmmo(512, 'Buckshot', true)
         ply:GiveAmmo(1024, 'SMG1', true)
@@ -32,7 +32,7 @@ function GM:PlayerLoadout( ply )
         else
             ply:SetMaxHealth(50)
             ply:SetHealth(50)
-            ply:SetRunSpeed(325)
+            ply:SetRunSpeed(330)
             ply:SetWalkSpeed(300)
         end
         ply:Give('weapon_fists')
