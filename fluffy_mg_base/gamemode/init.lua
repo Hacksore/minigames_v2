@@ -98,6 +98,16 @@ function GM:PlayerSpawn(ply)
             end
         end)
     end
+
+    -- if we have two or more players marked the server allocated
+    -- local playerCount = #player.GetAll()
+    -- local agonesPort = DSG_PORT -- we will make this later
+    -- local agonesUrl = string.format("http://localhost:%s/allocated", sdkPort)
+    -- http.Post(agonesUrl, {}, function(result)
+
+    -- end, function(failed)
+    --     print(failed)
+    -- end)
 end
 
 -- Minigames team preparation
