@@ -46,6 +46,13 @@ util.AddNetworkString('SendExperienceTable')
 util.AddNetworkString('MinigamesAnnouncement')
 util.AddNetworkString('CoolTransition')
 
+-- read agones config
+local agonesConfigFile = file.Read("agones.json", "DATA")
+local agonesConfig = util.JSONToTable(agonesConfigFile)
+local serverAllocated = false
+
+agonesConfigFile:Close()
+
 -- Called each time a player spawns
 function GM:PlayerSpawn(ply)
     local state = GAMEMODE:GetRoundState()
@@ -99,15 +106,17 @@ function GM:PlayerSpawn(ply)
         end)
     end
 
-    -- if we have two or more players marked the server allocated
-    -- local playerCount = #player.GetAll()
-    -- local agonesPort = DSG_PORT -- we will make this later
-    -- local agonesUrl = string.format("http://localhost:%s/allocated", sdkPort)
-    -- http.Post(agonesUrl, {}, function(result)
+    -- mark the server allocated on a connection    
+    local playerCount = #player.GetAll()
+    local agonesUrl = string.format("http://localhost:%s/allocated", agonesConfig.skdPort)
 
-    -- end, function(failed)
-    --     print(failed)
-    -- end)
+    if playerCount > 0 and not serverAllocated then
+        http.Post(agonesUrl, {}, function(result)
+            print(result)
+        end, function(failed)
+            print(failed)
+        end)
+    end
 end
 
 -- Minigames team preparation
