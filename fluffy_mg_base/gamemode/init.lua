@@ -51,6 +51,20 @@ local agonesConfigFile = file.Read("agones.json", "DATA")
 local agonesConfig = util.JSONToTable(agonesConfigFile)
 local serverAllocated = false
 
+function GM:PlayerConnect(name, ip)
+    -- mark the server allocated on a connection    
+    local playerCount = #player.GetAll()
+    local agonesUrl = string.format("http://localhost:%s/allocated", agonesConfig.skdPort)
+
+    if playerCount > 0 and not serverAllocated then
+        http.Post(agonesUrl, {}, function(result)
+            print(result)
+        end, function(failed)
+            print(failed)
+        end)
+    end
+end
+
 -- Called each time a player spawns
 function GM:PlayerSpawn(ply)
     local state = GAMEMODE:GetRoundState()
@@ -104,17 +118,6 @@ function GM:PlayerSpawn(ply)
         end)
     end
 
-    -- mark the server allocated on a connection    
-    local playerCount = #player.GetAll()
-    local agonesUrl = string.format("http://localhost:%s/allocated", agonesConfig.skdPort)
-
-    if playerCount > 0 and not serverAllocated then
-        http.Post(agonesUrl, {}, function(result)
-            print(result)
-        end, function(failed)
-            print(failed)
-        end)
-    end
 end
 
 -- Minigames team preparation
