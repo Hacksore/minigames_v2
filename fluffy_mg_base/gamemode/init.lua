@@ -51,8 +51,6 @@ local agonesConfigFile = file.Read("agones.json", "DATA")
 local agonesConfig = util.JSONToTable(agonesConfigFile)
 local serverAllocated = false
 
-agonesConfigFile:Close()
-
 -- Called each time a player spawns
 function GM:PlayerSpawn(ply)
     local state = GAMEMODE:GetRoundState()
