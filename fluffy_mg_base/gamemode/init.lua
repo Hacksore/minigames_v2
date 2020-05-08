@@ -54,7 +54,7 @@ local serverAllocated = false
 function GM:PlayerConnect(name, ip)
     -- mark the server allocated on a connection    
     local playerCount = #player.GetAll()
-    local agonesUrl = string.format("http://localhost:%s/allocated", agonesConfig.skdPort)
+    local agonesUrl = string.format("http://localhost:%s/reserve", agonesConfig.skdPort)
 
     if playerCount > 0 and not serverAllocated then
         http.Post(agonesUrl, {}, function(result)
